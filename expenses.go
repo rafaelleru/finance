@@ -36,7 +36,7 @@ func main() {
 
 	flag.Parse()
 
-	if *checkFlag == true
+	if *checkFlag == true {
 		cmd := exec.Command("cat", transactions_file)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
