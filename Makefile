@@ -1,4 +1,4 @@
-build: expenses.go
+build: finance.go
 	go build finance.go
 
 clean:
