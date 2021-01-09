@@ -36,15 +36,14 @@ func main() {
 
 	flag.Parse()
 
-	if *checkFlag == true {
-		cmd := exec.Command("cat", "transactions")
+	if *checkFlag == true
+		cmd := exec.Command("cat", transactions_file)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		cmd.Start()
 	}
 
 	if *addFlag == true {
-		fmt.Println("Adding new transaction")
 		var tr = Transaction{value: *valueFlag, description: *mFlag, date: time.Now()}
 		tr.id = fmt.Sprintf("%x",  md5.Sum([]byte(tr.date.String())))
 
