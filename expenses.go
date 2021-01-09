@@ -30,10 +30,18 @@ func main() {
 	}
 
 	var addFlag = flag.Bool("add", false, "Create a new transaction")
+	var checkFlag = flag.Bool("check", false, "Print a summary of the transactions")
 	var valueFlag = flag.Float64("value", 0.0, "Value for the transaction")
 	var mFlag = flag.String("m", "", "Description for the transaction")
 
 	flag.Parse()
+
+	if *checkFlag == true {
+		cmd := exec.Command("cat", "transactions")
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Start()
+	}
 
 	if *addFlag == true {
 		fmt.Println("Adding new transaction")
