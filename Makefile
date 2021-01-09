@@ -1,9 +1,9 @@
 build: expenses.go
-	go build expenses.go
+	go build finance.go
 
 clean:
-	rm -rf expenses
+	rm -rf finance
 
 install: expenses
-	cp ./expenses /usr/bin/expenses
+	cp ./finance /usr/bin/finance
 
