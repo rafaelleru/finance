@@ -91,14 +91,23 @@ func main() {
 
 	var addFlag = flag.Bool("add", false, "Create a new transaction")
 	var checkFlag = flag.Bool("check", true, "Print a summary of the transactions")
+	var balanceFlag = flag.Bool("balance", false, "Get a balance between dates")
+	var findFlag = flag.String("find", "", "Find matching money movements (Using grep)")
 	var nLinesFlag = flag.Int("n", 50, "Number of transactions to show in resume")
 	var valueFlag = flag.Float64("value", 0.0, "Value for the transaction")
 	var mFlag = flag.String("m", "", "Description for the transaction")
-	var balanceFlag = flag.Bool("balance", false, "Get a balance between dates")
 	var dateStart = flag.String("start", time.Now().String(), "Get a balance between dates")
 	var dateEnd = flag.String("end", time.Now().String(), "Get a balance between dates")
 
 	flag.Parse()
+
+	if *findFlag != "" {
+		cmd := exec.Command("rg", "-i", "-e", *findFlag, transactions_file)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Start()
+		os.Exit(0)
+	}
 
 	if *addFlag == true {
 		var tr = Transaction{value: *valueFlag, description: *mFlag, date: time.Now()}
