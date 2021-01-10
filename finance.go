@@ -1,11 +1,13 @@
 package main
 
-import "os"
-import "os/exec"
-import "crypto/md5"
-import "fmt"
-import "time"
-import "flag"
+import (
+	"os"
+	"os/exec"
+	"crypto/md5"
+	"fmt"
+	"time"
+	"flag"
+)
 
 type Transaction struct {
 	// TODO: use md5 as type??
@@ -23,7 +25,8 @@ func transaction_to_line(tr Transaction) string {
 }
 
 func commit_transaction(description string) int {
-	os.Chdir("/home/rl/.expenses/")
+	home_dir := os.Getenv("HOME")
+	os.Chdir(home_dir + "/.expenses/")
 	cmd := exec.Command("git", "add", "expenses.txt")
 	_, err := cmd.CombinedOutput()
 
@@ -47,7 +50,8 @@ func main() {
 
 	transactions_file := os.Getenv("EXPENSES_FILE") 
 	if len(transactions_file) == 0 {
-		transactions_file = "/home/rl/.expenses/expenses.txt"
+		home_dir := os.Getenv("HOME")
+		transactions_file = home_dir + "/.expenses/expenses.txt"
 	}
 
 	var addFlag = flag.Bool("add", false, "Create a new transaction")
