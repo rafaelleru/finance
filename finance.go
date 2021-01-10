@@ -128,7 +128,8 @@ func main() {
 	}
 
 	var addFlag = flag.Bool("add", false, "Create a new transaction")
-	var checkFlag = flag.Bool("check", false, "Print a summary of the transactions")
+	var checkFlag = flag.Bool("check", true, "Print a summary of the transactions")
+	var nLinesFlag = flag.Int("n", 50, "Number of transactions to show in resume")
 	var valueFlag = flag.Float64("value", 0.0, "Value for the transaction")
 	var mFlag = flag.String("m", "", "Description for the transaction")
 	var balanceFlag = flag.Bool("balance", false, "Get a balance between dates")
@@ -136,13 +137,6 @@ func main() {
 	var dateEnd = flag.String("end", time.Now().String(), "Get a balance between dates")
 
 	flag.Parse()
-
-	if *checkFlag == true {
-		cmd := exec.Command("cat", transactions_file)
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		cmd.Start()
-	}
 
 	if *addFlag == true {
 		var tr = Transaction{value: *valueFlag, description: *mFlag, date: time.Now()}
@@ -166,6 +160,8 @@ func main() {
 			fmt.Println("Error tracking the new transaction in git")
 			os.Exit(-1)
 		}
+
+		os.Exit(0)
 	}
 
 	if *balanceFlag == true {
@@ -183,4 +179,14 @@ func main() {
 		fmt.Printf("Total balance: %.2f\n", total_balance)
 		os.Exit(0)
 	}
+
+	if *checkFlag == true {
+		nLines := strconv.Itoa(*nLinesFlag)
+		cmd := exec.Command("tail",  "-n", nLines, transactions_file)
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		cmd.Start()
+		os.Exit(0)
+	}
+
 }
