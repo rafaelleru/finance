@@ -1,7 +1,7 @@
 build: finance
 
-finance: finance.go
-	go build finance.go
+finance: finance.go movement.go
+	go build
 
 clean:
 	rm -rf finance
