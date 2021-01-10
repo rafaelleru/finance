@@ -121,6 +121,9 @@ func get_balance(dateStart string, dateEnd string) (float64, []string) {
 
 func main() {
 
+	const colorRed = "\033[31m"
+	const colorGreen = "\033[32m"
+
 	transactions_file := os.Getenv("EXPENSES_FILE") 
 	if len(transactions_file) == 0 {
 		home_dir := os.Getenv("HOME")
@@ -165,6 +168,8 @@ func main() {
 	}
 
 	if *balanceFlag == true {
+		var color string
+
 		if dateStart == nil || dateEnd == nil {
 			fmt.Println("start and end parameters must be provided to get a balance")
 			os.Exit(-1)
@@ -176,7 +181,13 @@ func main() {
 			fmt.Println(ex)
 		}
 
-		fmt.Printf("Total balance: %.2f\n", total_balance)
+		if total_balance > 0 {
+			color = colorGreen
+		} else {
+			color = colorRed
+		}
+
+		fmt.Printf("Total balance: %s%.2f\n", color, total_balance)
 		os.Exit(0)
 	}
 
